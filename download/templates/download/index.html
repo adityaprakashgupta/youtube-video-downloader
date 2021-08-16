@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <title>Youtube Video Downloader</title>
+</head>
+<body>
+<div class="jumbotron text-center">
+  <h1>YOUTUBE VIDEO DOWNLOADER</h1>
+</div>
+<div class="well well-lg text-center">
+  <form method="post" action="">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" class="btn btn-info mt-2" value="Get Download Links">
+  </form>
+</div>
+{% if video %}
+  <div class="well well-lg" align="center">
+    <div>
+      <div class="row">
+        <div class="col-sm-4"></div>
+        <div class="col-sm-4">
+          <div>
+            <iframe src="{{ video.embed_url }}" width="320" height="240"></iframe>
+          </div>
+        </div>
+        <div class="col-sm-4"></div>
+
+      </div>
+
+      <div class="row">
+        <div class="col">
+        </div>
+        <div class="col">
+          <h4>{{ video.title }}</h4>
+          <h4>Duration <span class="glyphicon glyphicon-time"> </span>{{ video.duration }}</h4>
+          <h4>Views <span class="glyphicon glyphicon-eye-open"></span> {{ video.viewcount }}</h4>
+          <button class="btn btn-info" data-toggle="collapse" data-target="#description">Description</button>
+
+          <div id="description" class="collapse" style="text-align:justify;padding: 0% 10% 0% 10%;">
+            {{ video.description }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <table class="table table-hover text-center">
+    <thead>
+    <tr class="text-center">
+      <th class="text-center">Resolution</th>
+      <th class="text-center">Size</th>
+      <th class="text-center">File Type</th>
+      <th class="text-center">Download Link</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for stream in video.streams %}
+      <tr>
+        <td>{{ stream.resolution }}</td>
+        <td>{{ stream.get_filesize|filesizeformat }}</td>
+        <td>{{ stream.extension }}</td>
+        <td><a href="{{ stream.url }}&title={{ video.title }}" download="{{ video.title }}.{{ stream.extension }}"><span
+                class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  <table class="table table-hover text-center">
+    <p align="center">Video Only</p>
+    <thead>
+    <tr class="text-center">
+      <th class="text-center">Resolution</th>
+      <th class="text-center">Size</th>
+      <th class="text-center">File Type</th>
+      <th class="text-center">Download Link</th>
+    </tr>
+    </thead>
+    <tbody>
+   {% for stream in video.videostreams %}
+      <tr>
+        <td>{{ stream.resolution }}</td>
+        <td>{{ stream.get_filesize|filesizeformat }}</td>
+        <td>{{ stream.extension }}</td>
+        <td><a href="{{ stream.url }}&title={{ video.title }}" download="{{ video.title }}.{{ stream.extension }}"><span
+                class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+  <table class="table table-hover text-center">
+    <p align="center">Audio Only</p>
+    <thead>
+    <tr class="text-center">
+
+      <th class="text-center">Size</th>
+      <th class="text-center">File Type</th>
+      <th class="text-center">Download Link</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for stream in video.audiostreams %}
+      <tr>
+        <td>{{ stream.get_filesize|filesizeformat }}</td>
+        <td>{{ stream.extension }}</td>
+        <td><a href="{{ stream.url }}&title={{ video.title }}" download="{{ video.title }}.{{ stream.extension }}"><span
+                class="glyphicon glyphicon-download-alt"></span> Download</a></td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
+
+  </div>
+{% else %}
+
+{% endif %}</body>
+
+</html>

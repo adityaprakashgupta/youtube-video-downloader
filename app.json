@@ -1,0 +1,12 @@
+{
+    "name": "Youtube Video Downloader",
+    "description": "Youtube video downloader",
+    "author": "Aditya Prakash Gupta",
+    "keywords": [
+        "youtube",
+        "video download",
+        "download",
+        "youtube video download"
+    ],
+    "repository": "https://github.com/adityaprakashgupta/youtube-video-downloader"
+}
